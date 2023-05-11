@@ -6,12 +6,20 @@
   "scripts": {
     "start": "nodemon index.js"
   },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/AbdullahAbdelmouty/Ecommerce-store.git"
+  },
   "keywords": [],
   "author": "",
   "engines": {
     "node": "v18.13.0"
   },
   "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/AbdullahAbdelmouty/Ecommerce-store/issues"
+  },
+  "homepage": "https://github.com/AbdullahAbdelmouty/Ecommerce-store#readme",
   "dependencies": {
     "dotenv": "^16.0.3",
     "express": "^4.18.2",
