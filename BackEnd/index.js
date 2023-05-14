@@ -5,13 +5,17 @@ const errorHandlerMidlleware = require("./middleware/error-handler");
 const connectDB = require("./db/connect");
 const productsRouter = require("./routers/products");
 const app = express();
-
+const path = require('path');
 //middleware
 app.use(express.json());
-app.use("/api/v1/products", productsRouter)
+app.use(express.static('./FontEnd/public'));
+app.get('/',(req,res)=>{
+    res.sendFile(path.resolve(__dirname,'./FontEnd/public'))
+    // res.send("Dd")
+})
+app.use("/api/v1/products", productsRouter);
 app.use(notFound);
 app.use(errorHandlerMidlleware);
-
 const port = process.env.PORT || 3000;
 const start = async () => {
     //connect db

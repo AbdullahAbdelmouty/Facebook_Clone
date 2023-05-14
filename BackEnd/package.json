@@ -4,7 +4,7 @@
   "description": "",
   "start": "index.js",
   "scripts": {
-    "start": "nodemon index.js"
+    "start": "nodemon index.js react-scripts start"
   },
   "repository": {
     "type": "git",
