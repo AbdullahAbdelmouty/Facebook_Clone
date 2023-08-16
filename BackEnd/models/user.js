@@ -8,36 +8,17 @@ const userSchema = new mongoose.Schema(
         },
         email:{
             type:String,
-            required:true
-        },
-        username:{
-            type:String,
-            required:true
+            required:[true,"Please Provide Email"]
         },
         password:{
             type:String,
-            required:true
+            required:[true,"Plese Provide Password"]
         },
         name:{
-            firstname:{
-                type:String,
-                required:true
-            },
-            lastname:{
-                type:String,
-                required:true
-            }
+            type: String,
+            required: [true,"Please Provide Name"]
         },
-        address:{
-            city: String,
-            street: String,
-            number: Number,
-            zipcode: String,
-            geolocation:{
-                lat:String,
-                long:String
-            }
-        },
-        phone:String
-    }
+        },{timestamps:true}
 )
+
+module.exports = mongoose.model('User',userSchema)

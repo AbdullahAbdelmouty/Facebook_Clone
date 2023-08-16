@@ -20,6 +20,8 @@ app.use((req, res, next) => {
     next();
   });
 app.use("/api/v1/products", productsRouter);
+// must put notfound middleware before error handleware to check first
+// if the route exist or not 
 app.use(notFound);
 app.use(errorHandlerMidlleware);
 const port = process.env.PORT || 5000;
