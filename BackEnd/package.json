@@ -1,14 +1,10 @@
 {
-  "name": "store",
+  "name": "Facebook_Clone",
   "version": "1.0.0",
   "description": "",
   "start": "index.js",
   "scripts": {
     "start": "nodemon index.js react-scripts start"
-  },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/AbdullahAbdelmouty/Ecommerce-store.git"
   },
   "keywords": [],
   "author": "",
@@ -16,16 +12,14 @@
     "node": "v18.13.0"
   },
   "license": "ISC",
-  "bugs": {
-    "url": "https://github.com/AbdullahAbdelmouty/Ecommerce-store/issues"
-  },
-  "homepage": "https://github.com/AbdullahAbdelmouty/Ecommerce-store#readme",
   "dependencies": {
+    "bcryptjs": "^2.4.3",
     "dotenv": "^16.0.3",
     "express": "^4.18.2",
     "express-async-errors": "^3.1.1",
     "mongoose": "^7.1.0",
     "morgan": "^1.10.0",
-    "nodemon": "^2.0.22"
+    "nodemon": "^2.0.22",
+    "validator": "^13.11.0"
   }
 }
