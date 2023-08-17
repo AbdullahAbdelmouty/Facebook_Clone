@@ -10,10 +10,21 @@ const createJWT = ({payload})=>{
     const token = jwt.sign(payload,process.env.JWT_SECERT,{expiresIn:process.env.JWT_EXPIRE});
     return token
 }
+// cookies
+const attachCookiesToResponse = ({res,user})=>{
+    const token = createJWT({payload:user})
+    const oneDay = 1000*60*60*24
+    res.cookie('token',
+    token,
+    {httpOnly: true,
+    expires:new Date(Date.now() + oneDay)
+    })
+}
 
 const isTokenVaild = ({token})=>{jwt.verify(token,process.env.JWT_SECERT)}
 
 module.exports = {
     createJWT,
-    isTokenVaild
+    isTokenVaild,
+    attachCookiesToResponse
 }

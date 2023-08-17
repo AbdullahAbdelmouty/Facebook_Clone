@@ -1,6 +1,6 @@
 const User = require('../models/user')
 const CustomError = require('../Errors')
-const {createJWT} = require('../utils')
+const {attachCookiesToResponse} = require('../utils')
 const login = async(req,res)=>{
     res.send("signUp")
 }
@@ -22,8 +22,9 @@ const register = async(req,res)=>{
     const user = await User.create({name,email,password});
     // notice i will send the role value, because will use it i frontend 
     const tokenUser = {name:user.name,password:user.password,userId:user._id,role:user.role}
-    const token = createJWT({payload:tokenUser})
-    res.status(201).json({user,token});
+    attachCookiesToResponse({res,user:tokenUser})
+
+    res.status(201).json({user});
 }
 
 const logOut = async(req,res)=>{
