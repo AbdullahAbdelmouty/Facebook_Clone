@@ -10,6 +10,7 @@ const notFound = require("./middleware/not-found");
 const errorHandlerMidlleware = require("./middleware/error-handler");
 // routers
 const authRouter = require('./routers/authRoutes')
+const userRouter = require('./routers/userRouters')
 const app = express();
 //middleware
 app.use(morgan('tiny'))
@@ -18,7 +19,8 @@ app.use(cookieParser(process.env.JWT_SECERT))
 app.get('/',(req,res)=>{
     res.send("Home Page")
 })
-app.use('/api/vi/auth',authRouter);
+app.use('/api/v1/auth',authRouter);
+app.use('/api/v1/auth/users',userRouter)
 // must put notfound middleware before error handleware to check first
 // if the route exist or not 
 app.use(notFound);
