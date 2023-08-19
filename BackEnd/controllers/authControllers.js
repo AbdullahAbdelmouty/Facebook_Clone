@@ -44,7 +44,13 @@ const register = async(req,res)=>{
 }
 
 const logOut = async(req,res)=>{
-    res.send("logOut")
+    // remove token from cookies and expires the cookies in the same moment of logout
+    res.cookie('token','logout',{
+        httpOnly:true,
+        expires: new Date(Date.now())
+    }
+    )
+    res.send("done!")
 }
 
 module.exports = {
