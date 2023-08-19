@@ -16,7 +16,7 @@ const login = async(req,res)=>{
     if(!isCorrectPassword){
         throw new CustomError.UnAuthenticatedError("Password is wrong")
     }
-    const tokenUser = {email,password}
+    const tokenUser = {email:user.email,password:user.password,role:user.role}
     attachCookiesToResponse({res,user:tokenUser})
     res.status(200).json({user})
 

@@ -23,10 +23,10 @@ const attachCookiesToResponse = ({res,user})=>{
     })
 }
 
-const isTokenVaild = ({token})=>{jwt.verify(token,process.env.JWT_SECERT)}
+const isTokenValid = ({ token }) => jwt.verify(token, process.env.JWT_SECERT);
 
 module.exports = {
     createJWT,
-    isTokenVaild,
+    isTokenValid,
     attachCookiesToResponse
 }
