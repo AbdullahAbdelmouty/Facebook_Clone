@@ -14,7 +14,7 @@ const app = express();
 //middleware
 app.use(morgan('tiny'))
 app.use(express.json());
-app.use(cookieParser())
+app.use(cookieParser(process.env.JWT_SECERT))
 app.get('/',(req,res)=>{
     res.send("Home Page")
 })

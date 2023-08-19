@@ -1,8 +1,25 @@
 const User = require('../models/user')
 const CustomError = require('../Errors')
-const {attachCookiesToResponse} = require('../utils')
+const {attachCookiesToResponse} = require('../utils');
+const user = require('../models/user');
 const login = async(req,res)=>{
-    res.send("signUp")
+    const{email,password}=req.body;
+    if(!email||!password){
+        throw new CustomError.BadRequestError("Please provide email and password")
+    }
+    const user = await User.findOne({email})
+    console.log(user);
+    if(!user){
+        throw new CustomError.UnAuthenticatedError("Email not exist")
+    }
+    const isCorrectPassword = await user.comparePassword(password);
+    if(!isCorrectPassword){
+        throw new CustomError.UnAuthenticatedError("Password is wrong")
+    }
+    const tokenUser = {email,password}
+    attachCookiesToResponse({res,user:tokenUser})
+    res.status(200).json({user})
+
 }
 
 
@@ -23,7 +40,6 @@ const register = async(req,res)=>{
     // notice i will send the role value, because will use it i frontend 
     const tokenUser = {name:user.name,password:user.password,userId:user._id,role:user.role}
     attachCookiesToResponse({res,user:tokenUser})
-
     res.status(201).json({user});
 }
 
