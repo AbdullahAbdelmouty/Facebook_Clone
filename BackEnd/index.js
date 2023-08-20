@@ -20,7 +20,7 @@ app.get('/',(req,res)=>{
     res.send("Home Page")
 })
 app.use('/api/v1/auth',authRouter);
-app.use('/api/v1/auth/users',userRouter)
+app.use('/api/v1/users',userRouter)
 // must put notfound middleware before error handleware to check first
 // if the route exist or not 
 app.use(notFound);

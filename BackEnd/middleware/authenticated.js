@@ -6,10 +6,9 @@ const authenitcated = async(req,res,next)=>{
     throw new CustomeError.UnAuthenticatedError("Authentication invalid")
     }
     try {
-        const {name,email,role} = isTokenValid({token})
-        req.user = {name,email,role}
+        const {userId,name,email,role} = isTokenValid({token})
+        req.user = {userId,name,email,role}
     } catch (error) {
-        console.log('error');
     throw new CustomeError.UnAuthenticatedError("Authentication invalid")
     }
     next()

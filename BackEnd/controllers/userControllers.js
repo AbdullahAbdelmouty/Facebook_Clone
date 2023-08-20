@@ -1,4 +1,4 @@
-const { NotFoundError } = require('../Errors');
+const CustomError = require('../Errors')
 const User = require('../models/user');
 
 const getAllUsers = async(req,res)=>{
@@ -11,14 +11,14 @@ const getSingleUser = async(req,res)=>{
     const {id:userId} = req.params
     const user = await User.findOne({_id:userId}).select('-password')
     if(!user){
-        throw new NotFoundError(`not user exist with id: ${userId}`)
+        throw new CustomError.NotFoundError(`not user exist with id: ${userId}`)
     }
     const {name,email,role} = user
     res.status(200).json({name,email,role})
 }
 
 const showCurrentUser = async(req,res)=>{
-    res.send("get current user")
+    res.status(200).json({user:req.user})
 }
 
 const updateUser = async (req,res)=>{
@@ -26,7 +26,19 @@ const updateUser = async (req,res)=>{
 }
 
 const updateUserPassword = async(req,res)=>{
-    res.send("update user password")
+    const {newPassword} = req.body;
+    const {userId} = req.user;
+    const user = await User.findOne({_id:userId})
+    const isCorrectPassword = user.comparePassword(newPassword)
+    if(!isCorrectPassword){
+        throw new CustomError.UnAuthenticatedError('Authentication invalid')
+    }
+    user.password = newPassword;
+    const userUpdated = await  User.findByIdAndUpdate({_id:userId},{user},{
+        new:true,
+        runValidators:true
+    })
+    res.status(200).json(userUpdated)
 }
 
 module.exports = {

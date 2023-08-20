@@ -4,7 +4,7 @@ const {getAllUsers,getSingleUser,showCurrentUser,updateUser,updateUserPassword} 
 const {authenitcated,authorizePermissions} = require('../middleware/authenticated')
 
 router.route('/').get(authenitcated,authorizePermissions('admin'),getAllUsers)
-router.route('/me').get(showCurrentUser)
-router.route('/update-password').patch(updateUserPassword)
-router.route('/:id').get(authenitcated,getSingleUser).patch(updateUser)
+router.route('/me').get(authenitcated,showCurrentUser)
+router.route('/update-password').patch(authenitcated,updateUserPassword)
+router.route('/:id').get(authenitcated,getSingleUser)
 module.exports = router;
