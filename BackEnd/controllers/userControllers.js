@@ -1,6 +1,6 @@
 const CustomError = require('../Errors')
 const User = require('../models/user');
-
+const {createUserToken,attachCookiesToResponse} = require('../utils')
 const getAllUsers = async(req,res)=>{
     // select just users with user role and remove password from res
     const users = await User.find({role:"user"}).select('-password')
@@ -20,18 +20,36 @@ const getSingleUser = async(req,res)=>{
 const showCurrentUser = async(req,res)=>{
     res.status(200).json({user:req.user})
 }
+// update password using findByIdAndUpdate
+// const updateUser = async (req,res)=>{
+//     const {name,email} = req.body;
+//     const {userId} = req.user;
+//     if(!newName||!newEmail){
+//         throw new CustomError.BadRequestError('Please proivde name and email')
+//     }
+//     const user = await User.findByIdAndUpdate({_id:userId},{name,email},{
+//         new:true,
+//         runValidators:true
+//     })
+//     const userToken =  createUserToken(user)
+//     attachCookiesToResponse({res,user:userToken})
+//     res.status(200).json({user:userToken})
+// }
 
+// update password using .save()
 const updateUser = async (req,res)=>{
-    const {newName,newEmail} = req.body;
-    const {email} = req.user;
-    if(!email){
-        throw new CustomError.UnAuthenticatedError("Authentication invalid")
-    }
+    const {name,email} = req.body;
+    const {userId} = req.user;
     if(!newName||!newEmail){
         throw new CustomError.BadRequestError('Please proivde name and email')
     }
-
-
+    const user = await User.findOne({_id:userId})
+    user.name = name;
+    user.email = email;
+    user.save();
+    const userToken =  createUserToken(user)
+    attachCookiesToResponse({res,user:userToken})
+    res.status(200).json({user:userToken})
 }
 
 const updateUserPassword = async(req,res)=>{

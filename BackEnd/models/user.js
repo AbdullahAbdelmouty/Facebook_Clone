@@ -34,6 +34,9 @@ const userSchema = new mongoose.Schema({
 // hashing password using pre hook in mongoose and becrpt for hashing
 // notice i used function not arrow function to get access to this keyword 
 userSchema.pre('save',async function(){
+    // by this if condition I check if the password modified or not 
+    // to avoid hashing password multi times for example when update name or email
+    if(!this.isModified('password')) return
     const salt = await bcrypt.genSalt(10)
     this.password = await bcrypt.hash(this.password,salt)
 })

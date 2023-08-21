@@ -1,6 +1,6 @@
 const User = require('../models/user')
 const CustomError = require('../Errors')
-const {attachCookiesToResponse} = require('../utils');
+const {attachCookiesToResponse,createUserToken} = require('../utils');
 const user = require('../models/user');
 const login = async(req,res)=>{
     const{name,email,password}=req.body;
@@ -15,12 +15,10 @@ const login = async(req,res)=>{
     if(!isCorrectPassword){
         throw new CustomError.UnAuthenticatedError("Password is wrong")
     }
-    const tokenUser = {userId:user._id,name:user.name,email:user.email,role:user.role}
+    const tokenUser = createUserToken(user)
     attachCookiesToResponse({res,user:tokenUser})
     res.status(200).json({user})
-
 }
-
 
 const register = async(req,res)=>{
     const {name,email,password} = req.body;
@@ -37,7 +35,7 @@ const register = async(req,res)=>{
     // const role = firstUser? "admin":"user" and pass role to User.create({name,email,password})
     const user = await User.create({name,email,password});
     // notice i will send the role value, because will use it i frontend 
-    const tokenUser = {name:user.name,email:user.email,userId:user._id,role:user.role}
+    const tokenUser = createUserToken(user)
     attachCookiesToResponse({res,user:tokenUser})
     res.status(201).json({user});
 }
