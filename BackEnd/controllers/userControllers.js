@@ -22,23 +22,33 @@ const showCurrentUser = async(req,res)=>{
 }
 
 const updateUser = async (req,res)=>{
-    res.send("update user")
+    const {newName,newEmail} = req.body;
+    const {email} = req.user;
+    if(!email){
+        throw new CustomError.UnAuthenticatedError("Authentication invalid")
+    }
+    if(!newName||!newEmail){
+        throw new CustomError.BadRequestError('Please proivde name and email')
+    }
+
+
 }
 
 const updateUserPassword = async(req,res)=>{
-    const {newPassword} = req.body;
+    const {oldPassword,newPassword} = req.body;
     const {userId} = req.user;
+    if(!oldPassword||!newPassword){
+        throw new CustomError.BadRequestError('Please provide old and new password')
+    }
     const user = await User.findOne({_id:userId})
-    const isCorrectPassword = user.comparePassword(newPassword)
+    const isCorrectPassword = user.comparePassword(oldPassword)
     if(!isCorrectPassword){
-        throw new CustomError.UnAuthenticatedError('Authentication invalid')
+        throw new CustomError.UnAuthenticatedError('Old password is not correct')
     }
     user.password = newPassword;
-    const userUpdated = await  User.findByIdAndUpdate({_id:userId},{user},{
-        new:true,
-        runValidators:true
-    })
-    res.status(200).json(userUpdated)
+    //will call pre function with save event in user model that will lead to hashing new password
+    user.save()
+    res.status(200).json({ msg: 'Success! Password Updated.' })
 }
 
 module.exports = {
